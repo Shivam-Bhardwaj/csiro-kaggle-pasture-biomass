@@ -1,0 +1,52 @@
+# Configuration file for CSIRO Pasture Biomass Estimation Competition
+
+# Data Configuration
+data:
+  data_dir: "data/raw"
+  train_csv: "data/raw/train.csv"
+  test_csv: "data/raw/test.csv"
+  image_dir: "data/raw/images"
+  image_size: [224, 224]  # [height, width]
+  batch_size: 32
+  num_workers: 4
+  val_split: 0.2
+
+# Model Configuration
+model:
+  name: "resnet50"  # Options: resnet50, efficientnet_b0, vit_base_patch16_224
+  pretrained: true
+  num_classes: 1  # For biomass prediction
+  dropout: 0.5
+
+# Training Configuration
+training:
+  epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "adam"  # Options: adam, sgd, adamw
+  scheduler: "cosine"  # Options: cosine, step, reduce_on_plateau
+  early_stopping_patience: 10
+  save_best_only: true
+
+# Augmentation Configuration
+augmentation:
+  horizontal_flip: 0.5
+  rotation: 15
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.2
+  hue: 0.1
+
+# Paths
+paths:
+  model_dir: "models"
+  checkpoint_dir: "models/checkpoints"
+  log_dir: "logs"
+  submission_dir: "submissions"
+
+# Device
+device: "cuda"  # Options: cuda, cpu
+
+# Random Seed
+seed: 42
+
