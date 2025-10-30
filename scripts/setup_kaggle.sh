@@ -1,0 +1,21 @@
+#!/bin/bash
+# Helper script to set up Kaggle credentials
+
+echo "Kaggle API Setup Helper"
+echo "======================="
+echo ""
+echo "To download the competition dataset, you need Kaggle API credentials."
+echo ""
+echo "Option 1: Using kaggle.json file"
+echo "1. Go to https://www.kaggle.com/account"
+echo "2. Scroll to 'API' section and click 'Create New Token'"
+echo "3. Download kaggle.json"
+echo "4. Run: mkdir -p ~/.kaggle && mv ~/Downloads/kaggle.json ~/.kaggle/"
+echo "5. Run: chmod 600 ~/.kaggle/kaggle.json"
+echo ""
+echo "Option 2: Using environment variables"
+echo "export KAGGLE_USERNAME=your_username"
+echo "export KAGGLE_KEY=your_api_key"
+echo ""
+echo "Once credentials are set up, the download script will automatically"
+echo "detect them and start downloading the dataset."
