@@ -1,7 +1,5 @@
 # Configuration file for CSIRO Pasture Biomass Estimation Competition
 
-# Configuration file for CSIRO Pasture Biomass Estimation Competition
-
 # Data Configuration
 data:
   data_dir: "data/raw"
