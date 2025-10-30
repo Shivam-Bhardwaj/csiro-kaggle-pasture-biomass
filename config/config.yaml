@@ -1,11 +1,13 @@
 # Configuration file for CSIRO Pasture Biomass Estimation Competition
 
+# Configuration file for CSIRO Pasture Biomass Estimation Competition
+
 # Data Configuration
 data:
   data_dir: "data/raw"
   train_csv: "data/raw/train.csv"
   test_csv: "data/raw/test.csv"
-  image_dir: "data/raw/images"
+  image_dir: "data/raw"  # Images are in train/ and test/ subdirectories
   image_size: [224, 224]  # [height, width]
   batch_size: 32
   num_workers: 4

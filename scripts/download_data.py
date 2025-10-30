@@ -39,13 +39,12 @@ def check_kaggle_credentials():
 def download_dataset():
     """Download the competition dataset."""
     
-    # Possible competition names (update when official name is known)
+    # Competition name (confirmed: csiro-biomass)
     competition_names = [
+        'csiro-biomass',  # Official competition name
         'csiro-pasture-biomass-estimation',
         'csiro-pasture-biomass',
         'pasture-biomass-estimation',
-        'csiro-kaggle-challenge',
-        'csiro-mla-pasture-biomass'
     ]
     
     data_dir = Path('data/raw')
@@ -61,8 +60,7 @@ def download_dataset():
             cmd = [
                 'kaggle', 'competitions', 'download',
                 '-c', comp_name,
-                '-p', str(data_dir),
-                '--unzip'
+                '-p', str(data_dir)
             ]
             
             result = subprocess.run(
@@ -76,9 +74,18 @@ def download_dataset():
                 print(f"\n✓✓✓ SUCCESS! Downloaded dataset from {comp_name} ✓✓✓")
                 print(result.stdout)
                 
+                # Extract zip files
+                import zipfile
+                for zip_file in data_dir.glob('*.zip'):
+                    print(f"\nExtracting {zip_file.name}...")
+                    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                        zip_ref.extractall(data_dir)
+                    zip_file.unlink()  # Remove zip file
+                    print(f"✓ Extracted and removed {zip_file.name}")
+                
                 # List downloaded files
                 print("\nDownloaded files:")
-                for file in data_dir.rglob('*'):
+                for file in sorted(data_dir.rglob('*')):
                     if file.is_file():
                         size_mb = file.stat().st_size / (1024 * 1024)
                         print(f"  {file.relative_to(data_dir)} ({size_mb:.2f} MB)")
