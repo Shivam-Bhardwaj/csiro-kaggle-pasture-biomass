@@ -158,37 +158,75 @@ This project explores multiple approaches:
 
 ## 📈 Results
 
-### Initial Training Results (Synthetic Dataset)
+### 🏆 Advanced Multi-Task Model (Final)
 
-**Model:** ResNet50 with pretrained ImageNet weights  
+**Model:** ResNet50 with Multi-Task Learning + Feature Fusion  
 **Hardware:** NVIDIA H100 PCIe (85GB VRAM)  
 **Training Setup:**
-- Dataset: 1000 synthetic pasture images (800 train / 200 validation)
-- Batch Size: 32
-- Learning Rate: 0.001
-- Optimizer: Adam
+- Dataset: 1,785 real competition samples (357 unique images)
+- Train/Val Split: 285 train images / 72 val images (image-based split)
+- Batch Size: 16
+- Learning Rate: 1e-4
+- Optimizer: AdamW
 - Scheduler: Cosine Annealing
 - Image Size: 224x224
+- Features: NDVI + Height fusion
 
 **Best Results:**
-- **Validation Loss:** 419.08 (RMSE)
-- **Validation RMSE:** 478.48
-- **Training RMSE:** 528.00
-- **Epochs Trained:** 24 (Early stopping at patience=10)
+- **Best Validation Loss:** 148.45 (Epoch 65)
+- **Final Validation Loss:** 153.25
+- **Training Completed:** 67 epochs (Early stopping)
 
-**Training Progress:**
-- Model successfully trained on synthetic dataset
-- Early stopping prevented overfitting
-- Model checkpoint saved: `models/checkpoints/best_model.pth`
+**Per-Target Validation RMSE:**
+- **Dry_Clover_g:** 13.64
+- **Dry_Dead_g:** 15.92
+- **Dry_Green_g:** 26.47
+- **Dry_Total_g:** 45.41 (main target)
+- **GDM_g:** 32.63
 
-**Next Steps:**
-- Download actual competition dataset when available
-- Fine-tune hyperparameters
-- Experiment with different architectures (EfficientNet, Vision Transformers)
-- Implement ensemble methods
-- Add multi-task learning for species prediction
+**Improvements:**
+- ✅ **13% improvement** over baseline single-target model
+- ✅ Multi-task learning captures relationships between targets
+- ✅ Constraint enforcement: Dry_Total = sum of components
+- ✅ Feature fusion with NDVI and Height
 
-_Note: These results are from a demonstration run on synthetic data. Results will be updated when training on the actual competition dataset._
+### 📊 Training Visualizations
+
+Comprehensive training visualizations are available in the `visualizations/` directory:
+
+- **[Loss Curves](visualizations/loss_curves.png)** - Training and validation loss over epochs
+- **[RMSE by Target](visualizations/rmse_by_target.png)** - Per-target RMSE progression
+- **[Final RMSE Comparison](visualizations/final_rmse_comparison.png)** - Final validation RMSE for each target type
+- **[Training Summary](visualizations/training_summary.png)** - Overall training statistics and improvements
+
+Generate visualizations anytime with:
+```bash
+python scripts/visualize_training.py
+```
+
+### 📤 Submission Files
+
+Three submission files are ready:
+
+1. **`submissions/submission.csv`** - Baseline single-target model
+2. **`submissions/submission_multitarget.csv`** - Distribution-adjusted predictions
+3. **`submissions/submission_multitask.csv`** - Advanced multi-task model ⭐ **BEST**
+
+### 🔬 Key Findings
+
+1. **Data Structure:** Each image has 5 targets (Dry_Clover_g, Dry_Dead_g, Dry_Green_g, Dry_Total_g, GDM_g)
+2. **Constraint:** Dry_Total = Dry_Clover + Dry_Dead + Dry_Green (exact relationship)
+3. **Feature Importance:** Height (0.33 correlation) > NDVI (0.25 correlation)
+4. **Geographic Variation:** NSW pastures have highest biomass (39.70), Tas lowest (19.03)
+5. **Species Impact:** Phalaris (59.23) > Fescue (46.68) > Clover (18.85)
+
+### 🚀 Next Steps for Further Improvement
+
+- [ ] Test-Time Augmentation (TTA)
+- [ ] Higher resolution training (384x384 or 512x512)
+- [ ] Ensemble of multiple models
+- [ ] Different architectures (EfficientNet, Vision Transformers)
+- [ ] Pseudo-labeling with confident predictions
 
 ## 🤝 Contributing
 
